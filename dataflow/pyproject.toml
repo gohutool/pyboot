@@ -1,0 +1,67 @@
+[project]
+name = "gohutool-pyboot-dataflow"
+version = "1.0.2b3"                    # 版本顺手+1，避免“文件已存在”
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    {name = "joinsunsoft", email = "793875613@qq.com"},
+]
+maintainers = [{name = "joinsunsoft", email = "inthirties.liu@hotmail.com"}]
+requires-python = ">=3.12.10"
+description="Dataflow is an open-source Python microservice framework that simplifies the development of stand-alone production-grade Spring applications."
+dependencies = [
+    "fastapi>=0.117.1",
+    "sqlalchemy>=2.0.43",
+    "pydantic>=2.11.9",
+    "uvicorn>=0.37.0",
+    "dbutils>=3.1.1",
+    "numpy==2.3.3",
+    "python-dotenv==1.1.1",
+    "pytz==2025.2",
+    "PyYAML==6.0.2",
+    "starlette==0.48.0",
+    "omegaconf==2.3.0",
+    "antpathmatcher==1.0.1",
+    "slowapi==0.1.9",
+    "cachetools==5.5.0",
+    "Jinja2==3.1.6",
+    "anyio==4.9.0",
+    "PyJWT==2.10.1",
+    "APScheduler==3.10.4",
+    "PyJWT==2.10.1",
+    "httpx==0.28.1",
+    "langfuse==3.5.1"
+]
+
+[project.optional-dependencies]   # 👈 关键段
+mysql = ["PyMySQL==1.1.1"]
+pg  = ["psycopg[binary]>=3.1"]
+oracle  = ["oracledb==3.2.0"]
+captcha  = ["captcha==0.7.1"]
+etcd3 = ["etcd3==0.12.0"]
+ai  = ["langchain_community","langchain_text_splitters"]
+
+# all = ["myapp[mysql,pg,dev]"]      # 一键装全部
+
+[project.urls]                         # 以前叫 url/homepage
+Homepage = "https://github.com/gohutool/dataflow"
+Repository = "https://github.com/gohutool/dataflow"
+Issues = "https://github.com/gohutool/dataflow"
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# py-modules = []          # 清空模块列表
+# packages = ["dataflow"]  # 只打包这个包
+# packages = [
+#     "dataflow",
+#     "dataflow.module",
+#     "dataflow.module.context",
+# ]
+
+[tool.setuptools.packages.find]
+where = ["."]                 # 或 ["src"] 如果你用 src-layout
+include = ["dataflow*"]       # 把 dataflow 及其所有子包都收进来

@@ -1,0 +1,72 @@
+<mapper namespace='application.user.dao.UserMapper'>
+
+    <ref id="selectUserVo">
+        select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_by, u.create_time, u.remark, 
+        d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+        r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+        from sys_user u
+		    left join sys_dept d on u.dept_id = d.dept_id
+		    left join sys_user_role ur on u.user_id = ur.user_id
+		    left join sys_role r on r.role_id = ur.role_id
+    </ref>
+
+    <select id="selectUserByUserName">
+	    {$ selectUserVo $}        
+		where u.user_name = :userName and u.del_flag = '0'
+	</select>
+
+    <select id='say' resultType='datetime'>
+       {$ for_test $}
+    </select>
+
+    <ref id='for_test'>
+        SELECT create_time FROM sys_user
+                    WHERE 1=1
+                    {% if name %}
+                    AND name = :name
+                    {% endif %}
+                   
+    </ref>
+    
+    <select id='run'>
+        {$ for_test $}
+    </select>
+
+    <select id='select_by_id'>
+        SELECT * FROM t_user
+            WHERE 1=1
+            {% if name %}
+            AND name = {{ name | quote }}
+            {% endif %}
+            {% if id_list %}
+            AND id IN ({{ id_list | join(", ") }})
+            {% endif %}
+            {$ common_condition $}
+    </select>
+    <ref id='common_condition'>
+        name = :name
+        {$ common_condition_1$}
+        {$ common_condition_2 $}
+    </ref>
+    
+    <ref id='common_condition_1'>
+        And 1 = 1 
+        {$ common_condition_3 $}
+    </ref>
+
+    <ref id='common_condition_2'>
+        And age = :age AND type=:type 
+    </ref>
+
+    <ref id='common_condition_3'>
+        or age = :age AND type=:type 
+    </ref>
+
+    <update id='updateByUserName'>
+        update t_user set password=:password where name=:name
+    </update>
+    
+    <insert id='addUser'>
+        insert into t_user(name, age, type) values(:name, :age, :type)
+    </insert>
+</mapper>

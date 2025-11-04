@@ -1,0 +1,155 @@
+application:
+  name: DataFlow Application
+  version: 1.0.1-beta
+  profiles:
+    active: dev
+  server:
+    port: ${env:SERVER_PORT:8080}
+    host: ${env:SERVER_HOST:0.0.0.0}
+    workers: 1
+  
+logging:
+  level: ${env:LOG_LEVEL:INFO}
+  config: conf/logback.yaml
+
+# database:
+#   host: "${env:DB_HOST:localhost}"
+#   port: "${env:DB_PORT:3306}"
+#   name: "${env:DB_NAME:app_db}"
+#   username: "${env:DB_USER:admin}"
+#   password: "${env:DB_PASSWORD:password}"
+
+features:
+  enabled: true
+  api_url: "https://api.${application.server.host}:${application.server.port}/v1"
+
+context:
+  metrics:
+    prometheus:
+      enabled: on
+  limiter:
+    default_limit_rate:
+      - 200000/day
+      - 50/hour
+  pybatisplus:
+    root: conf
+    pattern: /**/*Mapper.xml
+  database:
+    ds01:
+      url: ${env:MYSQLDS.url:mysql+pymysql://u:p@localhost:61306/dataflow_test?charset%20utf8mb4}
+      # url: ${env:MYSQLDS.url:mysql+pymysql://u:p@localhost:61306/stock_agent?charset=utf8mb4}
+      username: ${env:MYSQLDS.user:stock_agent}
+      password: ${env:MYSQLDS.password:1qaz2wsx}
+      test: select 1
+    ds02:
+      url: ${env:ORACLEDS.url:oracle+oracledb://u:p@localhost:60521/?service_name%20ORCL}
+      username: ${env:ORACLEDS.user:stock_agent}
+      password: ${env:ORACLEDS.password:1qaz2wsx}         
+      test: select 1 from dual
+    ds03:
+      url: ${env:PGDS.url:postgresql+psycopg2://u:p@pgvector.ginghan.com:29432/aiproxy}
+      username: ${env:PGDS.user:postgres}
+      password: ${env:PGDS.password:aiproxy}
+      test: select 1
+    ds04:
+      url: sqlite:///application/db/etcdv3.db
+      test: select 1
+  redis:
+    host: ${env:REDIS.host:localhost}
+    port: ${env:REDIS.port:60379}
+    db: ${env:REDIS.db:14}
+    password: ${env:REDIS.password:12345678}
+  langfuse:
+    secret_key: ${env:LANGFUSE.secret_key:sk-lf-b60f4b33-ff5a-46ac-9086-e776373c86da}
+    public_key: ${env:LANGFUSE.public_key:pk-lf-4172303b-f7c4-4dc0-9d77-184d99c06131}
+    host: ${env:LANGFUSE.host:https://us.cloud.langfuse.com}
+  milvus:
+    uri: ${env:MILVUS.uri:https://milvus.ginghan.com}  
+    user: ${env:MILVUS.user:}
+    password: ${env:MILVUS.password:}
+    timeout: ${env:MILVUS.timeout:}
+    token: ${env:MILVUS.token:}
+  web:
+    cors:
+      allow_origins: 
+        - '*'
+      allow_methods: '*'
+      allow_header: '*'
+      allow_credentials: yes
+      expose_headers: '*'
+    jwt:
+      ttl_minutes: 21600
+      secret: 'replace-with-256-bit-secret'      # 32 字节以上
+    static:
+      root: app/ETCDV3
+      mapping:
+        # /html3: app/ETCDV3
+        # /app3: app/ETCDV3
+    proxy:
+      enabled: on
+  stream1:
+    kafka:      
+      outbound:
+        server-1:
+          bootstrap-servers: 192.168.18.145:9092  
+          client-id: python-producer
+          retries: 5
+          acks: all
+          channels: 
+            input_others:
+              destination: python.test.1
+              content-type: application/json
+            input_cardata:
+              destination: python.test.2      
+              content-type: application/json  
+        server-2:
+          bootstrap-servers: 192.168.18.145:9092  
+          client-id: python-producer
+          retries: 5
+          acks: all
+          channels: 
+            input_others:
+              destination: python.demo.1
+            input_cardata:
+              destination: python.demo.2
+
+      inbound:
+        server-1:
+          bootstrap-servers: 192.168.18.145:9092  
+          group-id: python-consumer
+          auto-offset-reset: earliest          
+          # enable-auto-commit: false
+          # isolation.level: read_committed
+        # 'enable.auto.commit',
+        # 'group.id', 
+        # 'bootstrap.servers',
+        # 'auto.offset.reset',
+        # 'session.timeout.ms',
+        # 'max.poll.interval.ms',
+        # 'auto.commit.interval.ms'
+          subscribes: 
+            input_others:
+              destination: python.test.1
+            input_cardata:
+              destination: python.test.2
+        server-2:
+          bootstrap-servers: 192.168.18.145:9092  
+          group-id: python-consumer
+          auto-offset-reset: earliest       
+          # auto-offset-commit: false   
+          subscribes: 
+            input_others:
+              destination: python.demo.1
+            input_cardata:
+              destination: python.demo.2
+  test:
+    web:
+      title: DataFlow
+      root: ./
+      num: 100
+      types:
+        - xls
+        - xlsx
+        - docs
+        - doc
+        - pdf

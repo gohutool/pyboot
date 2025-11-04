@@ -1,0 +1,68 @@
+antpathmatcher==1.0.1
+anyio==4.9.0
+APScheduler==3.10.4
+cachetools==5.5.0
+confluent_kafka==2.12.0
+dbutils==3.1.1
+django_recaptcha==4.1.0
+etcd3==0.12.0
+fastapi==0.120.4
+grpcio==1.75.1
+httpx==0.28.1
+Jinja2==3.1.6
+langchain_community==0.4.1
+langchain_text_splitters==1.0.0
+numpy==2.3.4
+omegaconf==2.3.0
+pandas==2.3.3
+prometheus_client==0.23.1
+pycryptodome==3.23.0
+pydantic==2.12.3
+pymilvus==2.5.6
+PyMySQL==1.1.1
+python_bcrypt==0.3.2
+pytz==2025.2
+PyYAML==6.0.2
+PyYAML==6.0.3
+sentence_transformers==4.1.0
+slowapi==0.1.9
+SQLAlchemy==2.0.44
+starlette==0.50.0
+starlette_prometheus==0.10.0
+tenacity==9.1.2
+typing_extensions==4.15.0
+uvicorn==0.38.0
+
+
+# dbutils==3.1.1
+# fastapi==0.117.1
+# langchain_community==0.3.29
+# langchain_text_splitters==0.3.11
+# numpy==2.3.3
+# pandas==2.3.2
+# prometheus_client==0.23.1
+# pydantic==2.11.9
+# pymilvus==2.5.6
+# PyMySQL==1.1.1
+# python-dotenv==1.1.1
+# pytz==2025.2
+# PyYAML==6.0.2
+# sentence_transformers==4.1.0
+# starlette==0.48.0
+# starlette_prometheus==0.10.0
+# tenacity==9.1.2
+# uvicorn==0.37.0
+# langfuse==3.5.1
+# omegaconf==2.3.0
+# antpathmatcher==1.0.1
+# sqlalchemy==2.0.43
+# oracledb==3.2.0
+# slowapi==0.1.9
+# cachetools==5.5.0
+# captcha==0.7.1
+# Jinja2==3.1.6
+# confluent-kafka=2.12.0
+# PyJWT==2.10.1
+# etcd3==0.12.0
+# # kafka-python==2.2.10
+# # rocketmq-python-client==5.0.6

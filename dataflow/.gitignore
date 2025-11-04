@@ -1,0 +1,9 @@
+logs
+__pycache__
+/down.txt
+build
+dist
+dataflow.egg-info
+gohutool_dataflow.egg-info
+app
+gohutool_pyboot_dataflow.egg-info
