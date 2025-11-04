@@ -41,18 +41,18 @@ context:
       username: ${env:MYSQLDS.user:stock_agent}
       password: ${env:MYSQLDS.password:1qaz2wsx}
       test: select 1
-    # ds02:
-    #   url: ${env:ORACLEDS.url:oracle+oracledb://u:p@localhost:60521/?service_name%20ORCL}
-    #   username: ${env:ORACLEDS.user:system}
-    #   password: ${env:ORACLEDS.password:orcl}         
-    #   test: select 1 from dual
+    ds02:
+      url: ${env:ORACLEDS.url:oracle+oracledb://u:p@localhost:60521/?service_name%20ORCL}
+      username: ${env:ORACLEDS.user:system}
+      password: ${env:ORACLEDS.password:orcl}         
+      test: select 1 from dual
     ds03:
       url: ${env:PGDS.url:postgresql+psycopg2://u:p@pgvector.ginghan.com:29432/aiproxy}
       username: ${env:PGDS.user:postgres}
       password: ${env:PGDS.password:aiproxy}
       test: select 1
     ds04:
-      url: sqlite:///application/db/etcdv3.db
+      url: sqlite:///db/etcdv3.db
       test: select 1
   redis:
     host: ${env:REDIS.host:localhost}
