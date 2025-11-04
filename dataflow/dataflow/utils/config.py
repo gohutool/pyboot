@@ -57,9 +57,14 @@ def get_environment() -> Environment:
 # Load appropriate .env file based on environment
 def load_env_file():
     """Load environment-specific .env file."""
+    # env = get_environment()
+    # _logger.INFO(f"Loading environment: {env}")
+    # base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    
     env = get_environment()
-    _logger.INFO(f"Loading environment: {env}")
-    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    # base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    base_dir = os.path.abspath('.')
+    _logger.INFO(f"Loading environment: {env} in {base_dir}")
 
     # Define env files in priority order
     env_files = [
