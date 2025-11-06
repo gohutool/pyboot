@@ -1,0 +1,117 @@
+application:
+  name: {{ project_name }}
+  version: 1.0.1-beta
+  profiles:
+###    active: dev
+  server:
+    port: ${SERVER_PORT:8080}
+    host: ${SERVER_HOST:0.0.0.0}
+    workers: 1
+  
+logging:
+  level: ${LOG_LEVEL:INFO}
+  config: conf/logback.yaml
+
+context:
+  metrics:
+    prometheus:
+      enabled: on
+  limiter:
+    default_limit_rate:
+      - 200000/day
+      - 50/hour
+  pybatisplus:
+    root: conf
+    pattern: /**/*Mapper.xml
+  database:
+    ds01:
+      url: ${MYSQLDS.url:mysql+pymysql://u:p@localhost:61306/dataflow_test?charset%20utf8mb4}
+      # url: ${MYSQLDS.url:mysql+pymysql://u:p@localhost:61306/stock_agent?charset=utf8mb4}
+      username: ${env:MYSQLDS.user:stock_agent}
+      password: ${env:MYSQLDS.password:stock_agent}
+      test: select 1
+    ds04:
+      url: sqlite:///db/etcdv3.db
+      test: select 1
+  redis:
+    host: ${env:REDIS.host:localhost}
+    port: ${env:REDIS.port:60379}
+    db: ${env:REDIS.db:14}
+    password: Lszx)hz@redis_20201014
+  web:
+    cors:
+      allow_origins: 
+        - '*'
+      allow_methods: '*'
+      allow_header: '*'
+      allow_credentials: yes
+      expose_headers: '*'
+    jwt:
+      ttl_minutes: 21600
+      secret: 'replace-with-256-bit-secret'      # 32 字节以上
+    static:
+      root: web
+      mapping:
+        # /html3: app/ETCDV3
+        # /app3: app/ETCDV3
+    proxy:
+      enabled: on
+  stream1:
+    kafka:      
+      outbound:
+        server-1:
+          bootstrap-servers: 192.168.18.145:9092  
+          client-id: python-producer
+          retries: 5
+          acks: all
+          channels: 
+            input_others:
+              destination: python.test.1
+              content-type: application/json
+            input_cardata:
+              destination: python.test.2      
+              content-type: application/json  
+        server-2:
+          bootstrap-servers: 192.168.18.145:9092  
+          client-id: python-producer
+          retries: 5
+          acks: all
+          channels: 
+            input_others:
+              destination: python.demo.1
+            input_cardata:
+              destination: python.demo.2
+
+      inbound:
+        server-1:
+          bootstrap-servers: 192.168.18.145:9092  
+          group-id: python-consumer
+          auto-offset-reset: earliest          
+          # enable-auto-commit: false
+          # isolation.level: read_committed
+          subscribes: 
+            input_others:
+              destination: python.test.1
+            input_cardata:
+              destination: python.test.2
+        server-2:
+          bootstrap-servers: 192.168.18.145:9092  
+          group-id: python-consumer
+          auto-offset-reset: earliest       
+          # auto-offset-commit: false   
+          subscribes: 
+            input_others:
+              destination: python.demo.1
+            input_cardata:
+              destination: python.demo.2
+  test:
+    web:
+      title: DataFlow
+      root: ./
+      num: 100
+      types:
+        - xls
+        - xlsx
+        - docs
+        - doc
+        - pdf

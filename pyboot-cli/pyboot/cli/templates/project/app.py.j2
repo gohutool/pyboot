@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""
+{{ project_name }} - PyBoot 应用入口
+
+{{ description }}
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# 添加源码路径
+src_path = Path(__file__).parent / "src"
+sys.path.insert(0, str(src_path))
+
+try:
+    from {{ package_name }}.config.app_config import AppConfig
+    from pyboot import PyBootApplication
+except ImportError as e:
+    print(f"❌ 导入失败: {e}")
+    print("请确保已安装 PyBoot 框架: pip install pyboot-framework")
+    sys.exit(1)
+
+
+def main():
+    """应用主入口"""
+    
+    # 创建 PyBoot 应用实例
+    app = PyBootApplication(
+        config_class=AppConfig,
+        scan_packages=["{{ package_name }}"]
+    )
+    
+    # 配置应用
+    app.configure(
+        debug=os.getenv("DEBUG", "false").lower() == "true"
+    )
+    
+    print("🚀 启动 {{ project_name }}...")
+    print(f"📦 包名: {{ package_name }}")
+    
+    # 运行应用
+    app.run()
+
+
+if __name__ == "__main__":
+    main()

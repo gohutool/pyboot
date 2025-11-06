@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name }} - PyBoot 应用</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- 自定义样式 -->
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #7c73e6;
+            --accent-color: #10b981;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .hero-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+        
+        .api-test-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                {{ project_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">特性</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#api">API 测试</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#docs">文档</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <div class="container my-5">
+        <!-- Hero 区域 -->
+        <section id="home" class="hero-section text-white text-center py-5 my-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold mb-4">
+                            欢迎使用 <span class="gradient-text">{{ project_name }}</span>
+                        </h1>
+                        <p class="lead mb-4">
+                            一个基于 PyBoot 框架构建的现代化 Web 应用
+                        </p>
+                        <p class="mb-5">
+                            {{ description }}
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <button class="btn btn-primary btn-lg" onclick="testAPI()">
+                                <i class="bi bi-play-circle me-2"></i>测试 API
+                            </button>
+                            <a href="/docs" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-book me-2"></i>查看文档
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 统计信息 -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-3">
+                <div class="stats-card text-white text-center p-4">
+                    <h3 class="fw-bold" id="uptimeCounter">0</h3>
+                    <p class="mb-0">运行时间(秒)</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card text-white text-center p-4">
+                    <h3 class="fw-bold" id="requestCount">0</h3>
+                    <p class="mb-0">API 请求</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card text-white text-center p-4">
+                    <h3 class="fw-bold" id="userCount">1</h3>
+                    <p class="mb-0">在线用户</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card text-white text-center p-4">
+                    <h3 class="fw-bold">{{ current_year }}</h3>
+                    <p class="mb-0">当前年份</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 特性展示 -->
+        <section id="features" class="my-5 py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold text-white mb-3">框架特性</h2>
+                <p class="lead text-light">PyBoot 提供了丰富的功能特性，助力快速开发</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning text-white fs-4"></i>
+                        </div>
+                        <h4>高性能</h4>
+                        <p>基于 FastAPI 构建，提供异步支持和高性能的请求处理能力。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-gear text-white fs-4"></i>
+                        </div>
+                        <h4>依赖注入</h4>
+                        <p>完整的 IoC 容器和依赖注入系统，让代码更加模块化和可测试。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check text-white fs-4"></i>
+                        </div>
+                        <h4>AOP 支持</h4>
+                        <p>面向切面编程，轻松处理日志、事务、安全等横切关注点。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-database text-white fs-4"></i>
+                        </div>
+                        <h4>数据访问</h4>
+                        <p>类似 MyBatis-Plus 的便捷数据库操作，支持多数据源和事务管理。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock text-white fs-4"></i>
+                        </div>
+                        <h4>定时任务</h4>
+                        <p>强大的定时任务调度系统，支持 Cron 表达式和多种调度策略。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-white text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-plug text-white fs-4"></i>
+                        </div>
+                        <h4>消息队列</h4>
+                        <p>完整的 Kafka 集成，支持生产者和消费者，以及流式处理。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 测试区域 -->
+        <section id="api" class="my-5 py-5">
+            <div class="api-test-section p-5">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold mb-4">API 测试工具</h2>
+                        <p class="mb-4">测试您的 PyBoot API 端点，查看实时响应。</p>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">选择 API 端点</label>
+                            <select class="form-select" id="apiEndpoint">
+                                <option value="/">根路径 (/)</option>
+                                <option value="/hello">问候接口 (/hello)</option>
+                                <option value="/health">健康检查 (/health)</option>
+                                <option value="/api/users">用户 API (/api/users)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">请求方法</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="httpMethod" id="methodGet" value="GET" checked>
+                                    <label class="form-check-label" for="methodGet">GET</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="httpMethod" id="methodPost" value="POST">
+                                    <label class="form-check-label" for="methodPost">POST</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4" id="requestBodySection" style="display: none;">
+                            <label class="form-label fw-semibold">请求体 (JSON)</label>
+                            <textarea class="form-control" id="requestBody" rows="4" placeholder='{"key": "value"}'></textarea>
+                        </div>
+                        
+                        <button class="btn btn-primary w-100" onclick="sendApiRequest()">
+                            <i class="bi bi-send me-2"></i>发送请求
+                        </button>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <h3 class="fw-bold mb-3">响应结果</h3>
+                        <div class="code-block p-3">
+                            <pre id="apiResponse" class="mb-0">{
+  "status": "等待请求...",
+  "data": null
+}</pre>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h4 class="fw-semibold">API 文档</h4>
+                            <p>访问以下链接查看完整的 API 文档：</p>
+                            <ul class="list-unstyled">
+                                <li><a href="/docs" target="_blank" class="text-decoration-none">📚 Swagger UI 文档</a></li>
+                                <li><a href="/redoc" target="_blank" class="text-decoration-none">📖 ReDoc 文档</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速开始 -->
+        <section id="docs" class="my-5 py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold text-white mb-3">快速开始</h2>
+                <p class="lead text-light">开始使用 PyBoot 框架开发您的应用</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="code-block p-4">
+                        <h5 class="text-info mb-3">创建控制器</h5>
+                        <code class="text-light">
+# 生成新的控制器<br>
+pyboot generate controller UserController<br><br>
+# 生成包含方法的服务<br>
+pyboot generate service UserService --methods create,update,delete
+                        </code>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="code-block p-4">
+                        <h5 class="text-info mb-3">示例控制器代码</h5>
+                        <code class="text-light">
+from pyboot.web import controller, GetMapping<br>
+<br>
+@controller<br>
+class UserController:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;@GetMapping("/users")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def get_users(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {"users": []}
+                        </code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="https://pyboot.org/docs" class="btn btn-outline-light btn-lg" target="_blank">
+                    <i class="bi bi-box-arrow-up-right me-2"></i>查看完整文档
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer text-white py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">
+                        &copy; {{ current_year }} {{ project_name }} - 基于 PyBoot 框架构建
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="btn-group" role="group">
+                        <a href="https://github.com/pyboot" class="btn btn-sm btn-outline-light" target="_blank">
+                            <i class="bi bi-github me-1"></i> GitHub
+                        </a>
+                        <a href="https://pyboot.org" class="btn btn-sm btn-outline-light" target="_blank">
+                            <i class="bi bi-globe me-1"></i> 官方网站
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 自定义 JavaScript -->
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化运行时间计数器
+            startUptimeCounter();
+            
+            // 监听请求方法变化，显示/隐藏请求体输入框
+            document.querySelectorAll('input[name="httpMethod"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const requestBodySection = document.getElementById('requestBodySection');
+                    requestBodySection.style.display = this.value === 'POST' ? 'block' : 'none';
+                });
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        
+        // 运行时间计数器
+        let startTime = Date.now();
+        function startUptimeCounter() {
+            setInterval(() => {
+                const uptime = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('uptimeCounter').textContent = uptime;
+            }, 1000);
+        }
+        
+        // API 请求计数
+        let requestCount = 0;
+        
+        // 测试 API 函数
+        async function testAPI() {
+            // 默认测试根路径
+            await sendApiRequest('/');
+        }
+        
+        // 发送 API 请求
+        async function sendApiRequest(customEndpoint = null) {
+            const endpointSelect = document.getElementById('apiEndpoint');
+            const endpoint = customEndpoint || endpointSelect.value;
+            
+            const method = document.querySelector('input[name="httpMethod"]:checked').value;
+            const requestBody = document.getElementById('requestBody').value;
+            
+            const responseElement = document.getElementById('apiResponse');
+            
+            try {
+                responseElement.innerHTML = `<span class="text-warning">发送请求中...</span>`;
+                
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                
+                if (method === 'POST' && requestBody) {
+                    options.body = requestBody;
+                }
+                
+                const response = await fetch(endpoint, options);
+                const data = await response.json();
+                
+                // 更新请求计数
+                requestCount++;
+                document.getElementById('requestCount').textContent = requestCount;
+                
+                // 显示响应
+                responseElement.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                responseElement.innerHTML = `<span class="text-danger">请求失败: ${error.message}</span>`;
+            }
+        }
+        
+        // 模拟用户计数（简单的随机变化）
+        setInterval(() => {
+            const userCountElement = document.getElementById('userCount');
+            let currentCount = parseInt(userCountElement.textContent);
+            // 随机增减1，但保持在1-10范围内
+            const change = Math.random() > 0.5 ? 1 : -1;
+            const newCount = Math.max(1, Math.min(10, currentCount + change));
+            userCountElement.textContent = newCount;
+        }, 5000);
+    </script>
+</body>
+</html>

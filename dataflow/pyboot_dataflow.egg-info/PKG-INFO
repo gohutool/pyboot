@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: pyboot-dataflow
+Version: 1.1.1
+Summary: Dataflow is an open-source Python microservice framework that simplifies the development of stand-alone production-grade Spring applications.
+Author-email: joinsunsoft <793875613@qq.com>
+Maintainer-email: joinsunsoft <inthirties.liu@hotmail.com>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://github.com/gohutool/pyboot/
+Project-URL: Repository, https://github.com/gohutool/pyboot
+Project-URL: Issues, https://github.com/gohutool/pyboot
+Keywords: web,framework,cli,springboot,fastapi
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: >=3.12.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi>=0.117.1
+Requires-Dist: sqlalchemy>=2.0.43
+Requires-Dist: pydantic>=2.11.9
+Requires-Dist: uvicorn>=0.37.0
+Requires-Dist: dbutils>=3.1.1
+Requires-Dist: numpy==2.3.3
+Requires-Dist: python-dotenv==1.1.1
+Requires-Dist: pytz==2025.2
+Requires-Dist: PyYAML==6.0.2
+Requires-Dist: starlette==0.48.0
+Requires-Dist: omegaconf==2.3.0
+Requires-Dist: antpathmatcher==1.0.1
+Requires-Dist: slowapi==0.1.9
+Requires-Dist: cachetools==5.5.0
+Requires-Dist: Jinja2==3.1.6
+Requires-Dist: anyio==4.9.0
+Requires-Dist: PyJWT==2.10.1
+Requires-Dist: APScheduler==3.10.4
+Requires-Dist: PyJWT==2.10.1
+Requires-Dist: httpx==0.28.1
+Requires-Dist: langfuse==3.5.1
+Provides-Extra: mysql
+Requires-Dist: PyMySQL==1.1.1; extra == "mysql"
+Provides-Extra: pg
+Requires-Dist: psycopg[binary]>=3.1; extra == "pg"
+Provides-Extra: oracle
+Requires-Dist: oracledb==3.2.0; extra == "oracle"
+Provides-Extra: captcha
+Requires-Dist: captcha==0.7.1; extra == "captcha"
+Provides-Extra: etcd3
+Requires-Dist: etcd3==0.12.0; extra == "etcd3"
+Provides-Extra: ai
+Requires-Dist: langchain_community; extra == "ai"
+Requires-Dist: langchain_text_splitters; extra == "ai"
+Dynamic: license-file
+
+Dataflow is an open-source Python microservice framework that simplifies the development of stand-alone, production-grade Spring applications. It provides embedded servers, auto-configuration, and minimal setup, allowing developers to build and run python apps quickly—no heavy XML or boilerplate code needed.
+Python microservice = a tiny, self-contained Java app that starts in seconds, exposes REST endpoints, and ships with its own server—ready to scale and deploy independently.

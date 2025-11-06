@@ -1,5 +1,5 @@
 [project]
-name = "gohutool-pyboot-dataflow"
+name = "pyboot-dataflow"
 version = "1.1.1"                    # 版本顺手+1，避免“文件已存在”
 readme = "README.md"
 license = "Apache-2.0"
@@ -9,7 +9,19 @@ authors = [
 ]
 maintainers = [{name = "joinsunsoft", email = "inthirties.liu@hotmail.com"}]
 requires-python = ">=3.12.10"
+keywords = ["web", "framework", "cli", "springboot", "fastapi"]
 description="Dataflow is an open-source Python microservice framework that simplifies the development of stand-alone production-grade Spring applications."
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
 dependencies = [
     "fastapi>=0.117.1",
     "sqlalchemy>=2.0.43",
@@ -45,9 +57,9 @@ ai  = ["langchain_community","langchain_text_splitters"]
 # all = ["myapp[mysql,pg,dev]"]      # 一键装全部
 
 [project.urls]                         # 以前叫 url/homepage
-Homepage = "https://github.com/gohutool/dataflow"
-Repository = "https://github.com/gohutool/dataflow"
-Issues = "https://github.com/gohutool/dataflow"
+Homepage = "https://github.com/gohutool/pyboot/"
+Repository = "https://github.com/gohutool/pyboot"
+Issues = "https://github.com/gohutool/pyboot"
 
 
 [build-system]

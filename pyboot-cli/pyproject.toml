@@ -1,0 +1,86 @@
+[project]
+name = "pyboot-cli"
+version = "1.0.0"
+description = "PyBoot CLI - Python Spring Boot like framework command line tool"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    {name = "joinsunsoft", email = "793875613@qq.com"},
+]
+
+readme = "README.md"
+maintainers = [{name = "joinsunsoft", email = "inthirties.liu@hotmail.com"}]
+requires-python = ">=3.12.10"
+keywords = ["web", "framework", "cli", "springboot", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "click>=8.0.0",
+    "jinja2>=3.0.0",
+    "rich>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "flake8>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/gohutool/pyboot"
+Repository = "https://github.com/gohutool/pyboot"
+Issues = "https://github.com/gohutool/pyboot"
+# Homepage = "https://github.com/pyboot/pyboot-cli"
+# Documentation = "https://pyboot.readthedocs.io"
+# Repository = "https://github.com/pyboot/pyboot-cli"
+# "Bug Reports" = "https://github.com/pyboot/pyboot-cli/issues"
+
+[project.scripts]
+pyboot = "pyboot.cli.main:main"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"pyboot.cli.templates" = ["**/*.j2"]
+
+# [tool.black]
+# line-length = 88
+# target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+# [tool.pytest.ini_options]
+# testpaths = ["tests"]
+# python_files = ["test_*.py"]
+# addopts = [
+#     "--verbose",
+#     "--cov=pyboot",
+#     "--cov-report=term-missing",
+#     "--cov-report=html",
+# ]
+
+# [tool.coverage.run]
+# source = ["pyboot"]
+# omit = [
+#     "*/tests/*",
+#     "*/test_*",
+# ]
