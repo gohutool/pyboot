@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyBoot CLI 创建命令使用文档</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #7c73e6;
+            --accent-color: #10b981;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .code-header {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 0.5rem 1rem;
+            border-radius: 10px 10px 0 0;
+            font-size: 0.875rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        
+        .command-table th {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar .nav-link {
+            color: #4b5563;
+            border-left: 3px solid transparent;
+            padding: 0.5rem 1rem;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: var(--primary-color);
+            background: #f3f4f6;
+            border-left-color: var(--primary-color);
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .project-structure {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .file-tree {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .file-tree li {
+            padding: 2px 0;
+        }
+        
+        .file-tree .folder::before {
+            content: "📁 ";
+        }
+        
+        .file-tree .file::before {
+            content: "📄 ";
+        }
+        
+        .file-tree ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .footer {
+            background: var(--dark-color);
+            color: white;
+        }
+        
+        .hljs {
+            background: transparent !important;
+            padding: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                PyBoot CLI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#overview">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#installation">安装</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#usage">使用</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#templates">模板</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#structure">项目结构</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="hero-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">
+                        PyBoot <span class="gradient-text">create</span> 命令
+                    </h1>
+                    <p class="lead mb-4">
+                        快速创建标准化的 PyBoot 项目结构，遵循最佳实践和约定优于配置的原则。
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#usage" class="btn btn-light btn-lg">
+                            <i class="bi bi-play-circle me-2"></i>快速开始
+                        </a>
+                        <a href="https://github.com/pyboot/pyboot-cli" class="btn btn-outline-light btn-lg" target="_blank">
+                            <i class="bi bi-github me-2"></i>GitHub
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="code-block mt-4 mt-lg-0">
+                        <div class="code-header">
+                            <span>终端命令</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code class="language-bash">pyboot create app my-project</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-5">
+        <div class="row">
+            <!-- 侧边栏导航 -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="mb-3">文档目录</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#overview">命令概述</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#installation">安装方法</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#usage">使用指南</a>
+                            <ul class="nav flex-column ms-3">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#create-app">创建应用</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#create-module">创建模块</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#create-component">创建组件</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#templates">项目模板</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#structure">项目结构</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#examples">完整示例</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 主内容区域 -->
+            <div class="col-lg-9">
+                <!-- 概述 -->
+                <section id="overview" class="mb-5">
+                    <h2 class="fw-bold mb-4">命令概述</h2>
+                    <p class="lead">
+                        <code>pyboot create</code> 命令是 PyBoot CLI 的核心功能之一，用于快速生成标准化的 PyBoot 项目结构和代码文件。
+                    </p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-lightning text-white fs-4"></i>
+                                </div>
+                                <h4>快速启动</h4>
+                                <p class="mb-0">几秒钟内创建完整的项目结构，无需手动配置。</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-gear text-white fs-4"></i>
+                                </div>
+                                <h4>标准化</h4>
+                                <p class="mb-0">遵循 PyBoot 最佳实践和项目结构约定。</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="bi bi-layers text-white fs-4"></i>
+                                </div>
+                                <h4>模板化</h4>
+                                <p class="mb-0">多种项目模板可选，满足不同应用场景。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 安装 -->
+                <section id="installation" class="mb-5">
+                    <h2 class="fw-bold mb-4">安装方法</h2>
+                    <p>PyBoot CLI 可以通过 pip 直接安装：</p>
+                    
+                    <div class="code-block mb-4">
+                        <div class="code-header">
+                            <span>终端命令</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code class="language-bash">pip install pyboot-cli</code></pre>
+                    </div>
+                    
+                    <p>或者从源码安装：</p>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>终端命令</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code class="language-bash">git clone https://github.com/pyboot/pyboot-cli.git
+cd pyboot-cli
+pip install -e .</code></pre>
+                    </div>
+                </section>
+
+                <!-- 使用指南 -->
+                <section id="usage" class="mb-5">
+                    <h2 class="fw-bold mb-4">使用指南</h2>
+                    
+                    <!-- 创建应用 -->
+                    <div id="create-app" class="mb-5">
+                        <h3 class="fw-bold mb-3">创建应用</h3>
+                        <p>使用 <code>pyboot create app</code> 命令创建新的 PyBoot 应用项目。</p>
+                        
+                        <div class="code-block mb-4">
+                            <div class="code-header">
+                                <span>命令语法</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create app NAME [OPTIONS]</code></pre>
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">选项说明</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped command-table">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">选项</th>
+                                        <th width="30%">缩写</th>
+                                        <th width="50%">说明</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>--directory</code></td>
+                                        <td><code>-d</code></td>
+                                        <td>项目输出目录，默认为当前目录</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--template</code></td>
+                                        <td><code>-t</code></td>
+                                        <td>项目模板类型：default, web, api, microservice</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--package</code></td>
+                                        <td></td>
+                                        <td>基础包名，默认为项目名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--description</code></td>
+                                        <td></td>
+                                        <td>项目描述</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--force</code></td>
+                                        <td><code>-f</code></td>
+                                        <td>覆盖已存在的目录</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--no-input</code></td>
+                                        <td></td>
+                                        <td>非交互模式，使用默认值</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">使用示例</h5>
+                        
+                        <div class="step-card">
+                            <h5><span class="step-number">1</span> 创建基础应用</h5>
+                            <div class="code-block mt-3">
+                                <div class="code-header">
+                                    <span>终端命令</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
+                                <pre><code class="language-bash">pyboot create app myapp</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <h5><span class="step-number">2</span> 使用特定模板和包名</h5>
+                            <div class="code-block mt-3">
+                                <div class="code-header">
+                                    <span>终端命令</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
+                                <pre><code class="language-bash">pyboot create app myapi -t api --package com.example.myapi</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <h5><span class="step-number">3</span> 在指定目录创建项目</h5>
+                            <div class="code-block mt-3">
+                                <div class="code-header">
+                                    <span>终端命令</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
+                                <pre><code class="language-bash">pyboot create app myproject -d /path/to/projects --description "我的PyBoot项目"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 创建模块 -->
+                    <div id="create-module" class="mb-5">
+                        <h3 class="fw-bold mb-3">创建模块</h3>
+                        <p>使用 <code>pyboot create module</code> 命令在现有项目中创建新模块。</p>
+                        
+                        <div class="code-block mb-4">
+                            <div class="code-header">
+                                <span>命令语法</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create module NAME [OPTIONS]</code></pre>
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">选项说明</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped command-table">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">选项</th>
+                                        <th width="80%">说明</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>--package</code></td>
+                                        <td>模块包名</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>使用示例</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create module auth --package com.example.auth</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- 创建组件 -->
+                    <div id="create-component">
+                        <h3 class="fw-bold mb-3">创建组件</h3>
+                        <p>使用 <code>pyboot create component</code> 命令创建特定类型的组件。</p>
+                        
+                        <div class="code-block mb-4">
+                            <div class="code-header">
+                                <span>命令语法</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create component NAME [OPTIONS]</code></pre>
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">选项说明</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped command-table">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">选项</th>
+                                        <th width="30%">缩写</th>
+                                        <th width="50%">说明</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>--type</code></td>
+                                        <td></td>
+                                        <td>组件类型：service, util, config</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>使用示例</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create component email --type service</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 项目模板 -->
+                <section id="templates" class="mb-5">
+                    <h2 class="fw-bold mb-4">项目模板</h2>
+                    <p>PyBoot CLI 提供多种项目模板，满足不同应用场景的需求。</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card p-4">
+                                <h4 class="fw-bold">默认模板</h4>
+                                <p class="text-muted">标准 PyBoot 项目结构，包含基本配置和示例代码。</p>
+                                <div class="code-block mt-3">
+                                    <pre><code class="language-bash">pyboot create app myapp -t default</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card p-4">
+                                <h4 class="fw-bold">Web 模板</h4>
+                                <p class="text-muted">包含前端资源、模板引擎和静态文件服务的完整 Web 应用。</p>
+                                <div class="code-block mt-3">
+                                    <pre><code class="language-bash">pyboot create app myweb -t web</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card p-4">
+                                <h4 class="fw-bold">API 模板</h4>
+                                <p class="text-muted">专注于 RESTful API 开发，包含 OpenAPI 文档和认证中间件。</p>
+                                <div class="code-block mt-3">
+                                    <pre><code class="language-bash">pyboot create app myapi -t api</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-card p-4">
+                                <h4 class="fw-bold">微服务模板</h4>
+                                <p class="text-muted">适用于微服务架构，包含服务发现、配置中心和健康检查。</p>
+                                <div class="code-block mt-3">
+                                    <pre><code class="language-bash">pyboot create app myservice -t microservice</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 项目结构 -->
+                <section id="structure" class="mb-5">
+                    <h2 class="fw-bold mb-4">项目结构</h2>
+                    <p>PyBoot 创建的标准项目结构遵循最佳实践，确保代码组织和维护性。</p>
+                    
+                    <div class="project-structure">
+                        <ul class="file-tree">
+                            <li class="folder">myproject/
+                                <ul>
+                                    <li class="folder">src/
+                                        <ul>
+                                            <li class="folder">myproject/
+                                                <ul>
+                                                    <li class="folder">config/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                            <li class="file">app_config.py</li>
+                                                            <li class="file">database_config.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">controllers/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                            <li class="file">hello_controller.py</li>
+                                                            <li class="file">health_controller.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">services/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                            <li class="file">hello_service.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">models/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                            <li class="file">user.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">repositories/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">aspects/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="folder">utils/
+                                                        <ul>
+                                                            <li class="file">__init__.py</li>
+                                                            <li class="file">response_util.py</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="file">__init__.py</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder">tests/
+                                        <ul>
+                                            <li class="file">test_main.py</li>
+                                            <li class="file">conftest.py</li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder">static/</li>
+                                    <li class="folder">templates/</li>
+                                    <li class="folder">docs/</li>
+                                    <li class="folder">logs/</li>
+                                    <li class="file">app.py</li>
+                                    <li class="file">pyproject.toml</li>
+                                    <li class="file">requirements.txt</li>
+                                    <li class="file">README.md</li>
+                                    <li class="file">.gitignore</li>
+                                    <li class="file">.env.example</li>
+                                    <li class="file">application.yaml</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <h5 class="mt-4 mb-3">关键文件说明</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="30%">文件/目录</th>
+                                    <th width="70%">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>app.py</code></td>
+                                    <td>应用入口文件，包含应用启动逻辑</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pyproject.toml</code></td>
+                                    <td>项目配置和依赖管理文件</td>
+                                </tr>
+                                <tr>
+                                    <td><code>application.yaml</code></td>
+                                    <td>应用配置文件，包含数据库、服务器等配置</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/</code></td>
+                                    <td>源代码目录，遵循包结构组织</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/[package]/controllers/</code></td>
+                                    <td>控制器层，处理 HTTP 请求和响应</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/[package]/services/</code></td>
+                                    <td>服务层，包含业务逻辑</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/[package]/models/</code></td>
+                                    <td>数据模型定义</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/[package]/config/</code></td>
+                                    <td>配置类定义</td>
+                                </tr>
+                                <tr>
+                                    <td><code>tests/</code></td>
+                                    <td>测试代码目录</td>
+                                </tr>
+                                <tr>
+                                    <td><code>static/</code></td>
+                                    <td>静态资源文件目录</td>
+                                </tr>
+                                <tr>
+                                    <td><code>templates/</code></td>
+                                    <td>模板文件目录</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 完整示例 -->
+                <section id="examples" class="mb-5">
+                    <h2 class="fw-bold mb-4">完整示例</h2>
+                    <p>以下是一个完整的 PyBoot 项目创建和使用示例。</p>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">1</span> 创建项目</h5>
+                        <div class="code-block mt-3">
+                            <div class="code-header">
+                                <span>终端命令</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot create app demo-api -t api --package com.example.demo --description "示例API项目"</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">2</span> 进入项目目录</h5>
+                        <div class="code-block mt-3">
+                            <div class="code-header">
+                                <span>终端命令</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">cd demo-api</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">3</span> 安装依赖</h5>
+                        <div class="code-block mt-3">
+                            <div class="code-header">
+                                <span>终端命令</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pip install -e .</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">4</span> 生成新组件</h5>
+                        <div class="code-block mt-3">
+                            <div class="code-header">
+                                <span>终端命令</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot generate controller UserController
+pyboot generate service UserService --methods create,read,update,delete</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">5</span> 运行应用</h5>
+                        <div class="code-block mt-3">
+                            <div class="code-header">
+                                <span>终端命令</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code class="language-bash">pyboot run --reload</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h5><span class="step-number">6</span> 访问应用</h5>
+                        <p class="mt-3">打开浏览器访问以下地址：</p>
+                        <ul>
+                            <li>应用首页: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></li>
+                            <li>API 文档: <a href="http://localhost:8080/docs" target="_blank">http://localhost:8080/docs</a></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold">PyBoot CLI</h5>
+                    <p class="mb-0">Python Spring Boot 风格框架命令行工具</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-1">
+                        &copy; 2024 PyBoot Team. 保留所有权利。
+                    </p>
+                    <div class="btn-group" role="group">
+                        <a href="https://github.com/pyboot/pyboot-cli" class="btn btn-sm btn-outline-light" target="_blank">
+                            <i class="bi bi-github me-1"></i> GitHub
+                        </a>
+                        <a href="https://pyboot.org" class="btn btn-sm btn-outline-light" target="_blank">
+                            <i class="bi bi-globe me-1"></i> 官方网站
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 代码高亮 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    
+    <!-- 自定义 JavaScript -->
+    <script>
+        // 初始化代码高亮
+        document.addEventListener('DOMContentLoaded', function() {
+            hljs.highlightAll();
+            
+            // 平滑滚动
+            document.querySelectorAll('a.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const code = codeBlock.querySelector('code').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
