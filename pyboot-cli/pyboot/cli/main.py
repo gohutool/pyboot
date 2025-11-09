@@ -103,6 +103,10 @@ def install(package_name):
             click.echo(e.stderr)
         sys.exit(1)
 
+@cli.command()
+def run():
+    from dataflow.boot import ApplicationBoot
+    ApplicationBoot.Start()
 
 @cli.command()
 def doctor():

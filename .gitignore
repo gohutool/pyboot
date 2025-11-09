@@ -2,3 +2,5 @@ __pycache__
 /demo/etcdv3-browser/logs
 mytest
 pyboot_dataflow.egg-info
+myapplication
+pyboot_cli.egg-info
