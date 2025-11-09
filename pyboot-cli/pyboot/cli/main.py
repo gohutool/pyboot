@@ -2,8 +2,9 @@
 """
 PyBoot CLI 主入口 - 使用 Click
 """
-import os
+
 import sys
+import pathlib
 from pathlib import Path
 
 import click
@@ -106,6 +107,8 @@ def install(package_name):
 @cli.command()
 def run():
     from dataflow.boot import ApplicationBoot
+    proj_root = pathlib.Path.cwd()          # 假设 cli 就在项目根
+    sys.path.insert(0, str(proj_root)) 
     ApplicationBoot.Start()
 
 @cli.command()
