@@ -2,7 +2,7 @@ from dataflow.utils.log import Logger
 from dataflow.module.context.web import filter,verify_token
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from dataflow.utils.utils import current_millsecond,date2str_yyyymmddhhmmsss,date_datetime_cn
+from dataflow.utils.utils import current_millsecond,date2str_yyyymmddhhmmsss,date_datetime_cn  # noqa: F401
 from dataflow.utils.web.asgi import get_remote_address,getRequestURLPath,getRequestHeader
 from dataflow.module import Context,WebContext
 

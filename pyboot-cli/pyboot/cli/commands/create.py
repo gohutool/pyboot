@@ -113,6 +113,7 @@ def _create_project_structure(project_name: str, package_name: str,
     directories = [
         # output_dir / "src" / package_name,
         output_dir / "application" / package_name, 
+        output_dir / "dataflowx" / "context" / package_name, 
         output_dir / "docs",
         output_dir / "web", 
         output_dir / "conf",
@@ -202,7 +203,7 @@ def _generate_project_files(context: dict, output_dir: Path):
         # ("project/user.py.j2", output_dir / "application" / context["package_name"] / "model" / "user.py"),
         
         # 工具类
-        # ("project/utils/__init__.py.j2", output_dir / "src" / context["package_name"] / "utils" / "__init__.py"),
+        ("project/__init__.py.j2", output_dir / "dataflowx" / "context" / context["package_name"] / "__init__.py"),
         # ("project/utils/response_util.py.j2", output_dir / "src" / context["package_name"] / "utils" / "response_util.py"),
         
     ]
