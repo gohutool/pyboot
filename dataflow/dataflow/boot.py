@@ -5,6 +5,7 @@ from dataflow.utils.utils import str_isEmpty
 from dataflow.utils.config import YamlConfigation  # noqa: F401
 import logging
 from dataflow.utils.utils import parse_long_args,set_cn_timezone
+from pathlib import Path
 
 set_cn_timezone()
 
@@ -70,7 +71,7 @@ class ApplicationBoot:
             logging.basicConfig(level=log_level)
             print(f'LOG Level : {log_level}')
 
-        _logger = Logger()
+        _logger = Logger("dataflow.boot")
                 
         _logger.INFO(f"{_c.getStr('application.name', 'DataFlow Application')} {_c.getStr('application.version', '1.0.0')} Start server on {host}:{port}")
         uvicorn.run("dataflow.router.endpoint:app", host=host, port=port, reload=False, workers=workers, headers=[("Server", "my-server/1.0")])
@@ -83,8 +84,9 @@ class ApplicationBoot:
         application_profile = _c.getStr('application.profiles.active')
         
         if not str_isEmpty(application_profile):
-            application_profile = get_file_with_profile(application_yaml, application_profile)
-            _c.mergeFile(application_profile)
+            application_profile:Path = get_file_with_profile(application_yaml, application_profile)
+            if application_profile.exists():
+                _c.mergeFile(application_profile)
         
         _c.mergeDict(configuration)
         return _c
