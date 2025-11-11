@@ -1,6 +1,6 @@
 [project]
 name = "pyboot-cli"
-version = "1.0.0"
+version = "1.0.1"
 description = "PyBoot CLI - Python Spring Boot like framework command line tool"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
