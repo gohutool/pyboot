@@ -1,4 +1,4 @@
-from dataflow.module.context.pybatisplus import Mapper,Selete,Update  # noqa: F401
+from dataflow.module.context.pybatisplus import Mapper,Select,Update  # noqa: F401
 from dataflow.module import Context
 from dataflow.utils.sign import matches,encode_password
 from dataflow.utils.utils import get_str_from_dict, date2str_yyyymmddddmmss, date_datetime_cn,str_to_json,json_to_str # noqa: F401
@@ -6,7 +6,7 @@ from dataflow.utils.utils import get_str_from_dict, date2str_yyyymmddddmmss, dat
 
 # @Mapper(table='t_user', id_col='username')
 class EtcdV3Mapper:
-    @Selete(datasource='ds04', sql='select * from t_user where username=:username')
+    @Select(datasource='ds04', sql='select * from t_user where username=:username')
     def selectUserByUserName(self, username:str)->dict:
         pass
     
@@ -14,7 +14,7 @@ class EtcdV3Mapper:
     def modifyPwd(self, username:str, password:str)->int:
         pass
     
-    @Selete(datasource='ds04', sql='select * from t_config order by node_name asc')
+    @Select(datasource='ds04', sql='select * from t_config order by node_name asc')
     def getallconfig(self)->list:
         pass
     
@@ -29,7 +29,7 @@ class EtcdV3Mapper:
     def updateconfig(self, id, node_name, node_host, node_port, node_demo, updatetime)->int:
         pass
     
-    @Selete(datasource='ds04', sql='select * from t_config where id=:id')
+    @Select(datasource='ds04', sql='select * from t_config where id=:id')
     def getconfig(self, id)->dict:
         pass
     
@@ -37,11 +37,11 @@ class EtcdV3Mapper:
     def deleteconfig(self, id)->int:
         pass
     
-    @Selete(datasource='ds04', sql='select * from t_search where config_id=:id order by search_name asc')
+    @Select(datasource='ds04', sql='select * from t_search where config_id=:id order by search_name asc')
     def getsearchs(self, id)->list:
         pass
     
-    @Selete(datasource='ds04', sql='select * from t_search where config_id=:id and search_id=:search_id')
+    @Select(datasource='ds04', sql='select * from t_search where config_id=:id and search_id=:search_id')
     def getsearch(self, id, search_id:str)->dict:
         pass
         
@@ -84,7 +84,7 @@ class EtcdV3Mapper:
     def deletegroup(self, config_id)->int:
         pass
     
-    @Selete(datasource='ds04', sql='select * from t_group where config_id=:id')
+    @Select(datasource='ds04', sql='select * from t_group where config_id=:id')
     def getgroup(self, id)->dict:
         pass
 

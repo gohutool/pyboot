@@ -4,7 +4,7 @@ from dataflow.utils.file import get_file_with_profile
 from dataflow.utils.utils import str_isEmpty
 from dataflow.utils.config import YamlConfigation  # noqa: F401
 import logging
-from dataflow.utils.utils import parse_long_args,set_cn_timezone
+from dataflow.utils.utils import parse_long_args_plus,set_cn_timezone
 from pathlib import Path
 
 set_cn_timezone()
@@ -47,10 +47,19 @@ class ApplicationBoot:
     applicationConfig:YamlConfigation
     configuration:dict
     @staticmethod
-    def Start(application_yaml:str='conf/application.yaml', scan:str|list[str]='application.**', configuration:dict=parse_long_args()):
+    def Start(application_yaml:str='conf/application.yaml', scan:str|list[str]='application.**', configuration:dict=parse_long_args_plus()):
         ApplicationBoot.application_yaml = application_yaml
         ApplicationBoot.scan = scan
         
+        if 'port' in configuration:
+            configuration['application.server.port'] = configuration['port']
+        
+        if 'host' in configuration:
+            configuration['application.server.host'] = configuration['host']
+            
+        if 'workers' in configuration:
+            configuration['application.server.workers'] = configuration['workers']
+            
         _c:YamlConfigation = ApplicationBoot._prepareApplicationConfig(application_yaml, configuration)
         
         ApplicationBoot.applicationConfig = _c

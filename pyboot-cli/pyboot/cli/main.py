@@ -104,7 +104,7 @@ def install(package_name):
             click.echo(e.stderr)
         sys.exit(1)
 
-@cli.command()
+@cli.command(context_settings={"ignore_unknown_options": True, "allow_extra_args": True})
 def run():
     from dataflow.boot import ApplicationBoot
     proj_root = pathlib.Path.cwd()          # 假设 cli 就在项目根

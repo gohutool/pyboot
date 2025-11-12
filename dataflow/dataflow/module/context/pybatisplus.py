@@ -33,7 +33,7 @@ def Mapper(datasource:str|PydbcTools=None,namespace:str=None, table:str=None, id
         return wrap
     return mapper_decorator
 
-def Selete(datasource:str|PydbcTools, sql:str=None, *, resultType:type|str=dict):
+def Select(datasource:str|PydbcTools, sql:str=None, *, resultType:type|str=dict):
     datasource = _get_datasource(datasource)        
     return _SELECT(datasource, sql=sql, resultType=resultType)
 

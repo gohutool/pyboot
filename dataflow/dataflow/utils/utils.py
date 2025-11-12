@@ -573,6 +573,54 @@ def r_bytes(d:bytes, width:int, fillchar=b'\0', trim:bool=False):
     return d
 
 
+def parse_long_args_plus(argv:list[str]=sys.argv[1:]) -> dict[str, Any]:
+    def cast(v: str) -> Any:
+        if v.isdigit():
+            return int(v)
+        try:
+            return float(v)
+        except ValueError:
+            pass
+        low = v.lower()
+        if low in ("true", "on", "yes"):
+            return True
+        if low in ("false", "off", "no"):
+            return False
+        return v
+
+    cfg: dict[str, Any] = {}
+    i, n = 0, len(argv)
+    while i < n:
+        tok = argv[i]
+        # 必须是长选项
+        if not tok.startswith("--"):
+            i += 1
+            continue
+
+        key = tok[2:]  # 去掉 --
+        # 情况 1: --key=value
+        if "=" in key:
+            k, v = key.split("=", 1)
+        # 情况 2: --key value（value 在下一个 token）
+        else:
+            k = key
+            if i + 1 < n and not argv[i + 1].startswith("-"):
+                v = argv[i + 1]
+                i += 1  # 跳过 value
+            else:
+                v = "true"  # 空值默认为布尔真
+
+        # 嵌套 dict 构建
+        keys = k.split(".")
+        d = cfg
+        for kk in keys[:-1]:
+            d = d.setdefault(kk, {})
+        d[keys[-1]] = cast(v)
+
+        i += 1
+    return cfg
+
+
 def parse_long_args(argv=sys.argv[1:]) -> dict[str, any]:
     """
     把 --a.b.c=value 变成 {'a': {'b': {'c': value}}}
@@ -782,6 +830,10 @@ class ReponseVO:
         return (f"ReponseVO(status={self.status}, code={self.code}, msg={self.msg}, data={self.data}")
     
 if __name__ == "__main__":
+    
+    print(parse_long_args_plus(['--port=8080']))
+    print(parse_long_args_plus(['--port', '8080']))
+    
     t = date_datetime_cn()
     print(f'{t}=={json_to_str(t)}')
     

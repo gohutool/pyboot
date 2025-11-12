@@ -6,3 +6,4 @@ myapplication
 pyboot_cli.egg-info
 sample
 dist
+build
