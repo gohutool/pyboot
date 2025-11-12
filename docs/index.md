@@ -149,21 +149,23 @@ context:
 | `pyboot-redis` | 为PyBoot提供高速缓存、分布式锁与队列能力，显著提升数据读写性能，轻松构建高并发、低延迟的分布式应用。 |
 | `pyboot-etcd` | 为PyBoot提供开箱即用的分布式键值存储与健康检查能力，让服务发现、配置共享和集群协调一键完成，无需额外编码即可构建高可用分布式系统。 |
 
+pyboot组件扩展实现自由扩展自己的插件，自动扫描加载，不需要重写init、run方法完成自定义命令与模板，支持参数注入与生命周期钩子， 集成自定义扩展组件到系统context容器里。
+
 ---
 
 ## 8. 性能 & 生产部署
 - **基于 FastAPI + uvloop**，媲美 **Go** 的吞吐量（见官方 benchmark）  
 - **内置 gunicorn + uvicorn worker** 启动脚本：`pyboot run --workers 8`  
-- **Docker 官方镜像** `pyboot/pyboot:1.0.0-slim` ，**冷启动 < 1 秒**  
+- **Docker 官方镜像** `registry.cn-shenzhen.aliyuncs.com/joinsunsoft/pyboot:1.0.0-slim` ，**冷启动 < 5 秒**  
 - **Prometheus + Grafana** 模板已集成，**指标端点** `/metrics` 一键暴露
 
 ---
 
 ## 9. 三分钟上线 · 完整 CI/CD 模板
 ```dockerfile
-FROM pyboot/pyboot:1.0.0-slim
-COPY . /app
-WORKDIR /app
+FROM registry.cn-shenzhen.aliyuncs.com/joinsunsoft/pyboot:1.0.0-slim
+COPY . /data/myapp/
+WORKDIR /data/myapp/
 CMD ["pyboot", "run", "--host=0.0.0.0", "--port=8000", "--workers=8"]
 ```
 GitHub Actions 文件已内置：`pyboot generate pipeline` 自动生成 `.github/workflows/deploy.yml`，**push 即部署**！

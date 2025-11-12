@@ -1,6 +1,6 @@
 [project]
 name = "pyboot-cli"
-version = "1.2.2"
+version = "1.2.3.1"
 description = "PyBoot CLI - Python Spring Boot like framework command line tool"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
@@ -21,11 +21,12 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
     "click>=8.0.0",
-    "jinja2>=3.0.0",
+    "jinja2>=3.1.6",
     "rich>=10.0.0",
 ]
 
@@ -59,7 +60,7 @@ where = ["."]                 # 或 ["src"] 如果你用 src-layout
 include = ["pyboot*"]       # 把 pyboot 及其所有子包都收进来
 
 [tool.setuptools.package-data]
-"pyboot.cli.templates" = ["**/*.j2"]
+"pyboot.cli.templates" = ["**/*.j2","**/etcdv3.db"]
 
 # [tool.black]
 # line-length = 88

@@ -1,6 +1,6 @@
 [project]
 name = "pyboot-dataflow"
-version = "1.2.2"                    # 版本顺手+1，避免“文件已存在”
+version = "1.2.3"                    # 版本顺手+1，避免“文件已存在”
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
@@ -20,15 +20,16 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-    "fastapi>=0.117.1",
-    "sqlalchemy>=2.0.43",
-    "pydantic>=2.11.9",
-    "uvicorn>=0.37.0",
+    "fastapi>=0.120.4",
+    "sqlalchemy>=2.0.44",
+    "pydantic>=2.12.3",
+    "uvicorn>=0.38.0",
     "dbutils>=3.1.1",
-    "numpy==2.3.3",
+    "numpy==2.3.4",
     "python-dotenv==1.1.1",
     "pytz==2025.2",
     "PyYAML==6.0.2",
@@ -41,7 +42,6 @@ dependencies = [
     "anyio==4.9.0",
     "PyJWT==2.10.1",
     "APScheduler==3.10.4",
-    "PyJWT==2.10.1",
     "httpx==0.28.1",
     "langfuse==3.5.1"
 ]
