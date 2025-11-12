@@ -81,7 +81,7 @@ class ApplicationBoot:
             print(f'LOG Level : {log_level}')
 
         _logger = Logger("dataflow.boot")
-                
+        
         _logger.INFO(f"{_c.getStr('application.name', 'DataFlow Application')} {_c.getStr('application.version', '1.0.0')} Start server on {host}:{port}")
         uvicorn.run("dataflow.router.endpoint:app", host=host, port=port, reload=False, workers=workers, headers=[("Server", "my-server/1.0")])
         _logger.INFO(f"{_c.getStr('application.name', 'DataFlow Application')} {_c.getStr('application.version', '1.0.0')} End server on {host}:{port}")        
@@ -90,7 +90,12 @@ class ApplicationBoot:
     def _prepareApplicationConfig(application_yaml:str='conf/application.yaml', configuration:dict={})->YamlConfigation:
         _c:YamlConfigation = YamlConfigation.loadConfiguration(application_yaml)
         
-        application_profile = _c.getStr('application.profiles.active')
+        if 'profile' in configuration:
+            application_profile = configuration['profile']
+        else:
+            application_profile = _c.getStr('application.profiles.active')       
+            
+        print(f'启动Profile={application_profile}')                 
         
         if not str_isEmpty(application_profile):
             application_profile:Path = get_file_with_profile(application_yaml, application_profile)
