@@ -411,25 +411,42 @@ def is_not_primitive(obj:type|object):
     
     return is_not_primitive(type(obj))
     # return not isinstance(obj, primitive_types)
+    
+def get_all_class():
+    classes = []
+    a = sys.modules.copy().items()
+    for module_name, module in a:
+        if module and hasattr(module, '__dict__'):
+            _logger.DEBUG(f'{module_name} {module}')
+            for attr_name in dir(module) :
+                if not attr_name.startswith('_'):
+                    attr = getattr(module, attr_name)
+                    if inspect.isclass(attr) and attr.__module__ == module_name:
+                        classes.append(attr)
 
+    return classes
 # ------------------- demo -------------------
 if __name__ == '__main__':
     
     _logger.DEBUG('====')
     
-    path = "application.test.a.aa.**,application.test.a.bb.**"
-    if len(sys.argv) >=2:
-        path = sys.argv[1]
-    # 1. 仅加载模块
-    # print(loader.load("dataflow"))
+    # path = "application.test.a.aa.**,application.test.a.bb.**"
+    # if len(sys.argv) >=2:
+    #     path = sys.argv[1]
+    # # 1. 仅加载模块
+    # # print(loader.load("dataflow"))
 
-    # 2. 加载 db + 第一级子模块/子包
-    # print(loader.load("dataflow.*"))
+    # # 2. 加载 db + 第一级子模块/子包
+    # # print(loader.load("dataflow.*"))
 
-    # 3. 加载 db + 全部递归子模块
-    # print(loader.load("dataflow.**"))
-    _logger.DEBUG(f'========== {path}')
-    _logger.DEBUG(loadlib_by_paths(path))
+    # # 3. 加载 db + 全部递归子模块
+    # # print(loader.load("dataflow.**"))
+    # _logger.DEBUG(f'========== {path}')
+    # _logger.DEBUG(loadlib_by_paths(path))
+    
+    _all = get_all_class()
+    
+    _logger.DEBUG(_all)
     
     exit()
     

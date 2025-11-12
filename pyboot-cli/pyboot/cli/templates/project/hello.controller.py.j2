@@ -13,6 +13,7 @@ from application.{{package_name}}.service.hello import ItemService, getInfos, Ue
 import httpx
 import asyncio
 from fastapi.responses import StreamingResponse
+from dataflow.module.context.web import RequestBind, create_token,Controller
 
 
 _logger = Logger('application.{{package_name}}.api')
@@ -156,7 +157,6 @@ async def watch(request: Request):
         
         sr:StreamResponse = await aps.async_stream_http_request(
             "http://localhost:8080/v3/stream",
-            # "http://localhost:12379/v3/watch",
                                     'POST',
                                     data=None,
                                     content=body,
@@ -166,21 +166,7 @@ async def watch(request: Request):
         response = sr.getResponse()
         return StreamingResponse(await sr.chunkstreams(),
                                     status_code=response.status_code,
-                                    headers=response.headers)
-        
-        # response, sr = await aps.async_response_stream(
-        #         "http://localhost:8080/v3/stream",
-        #         # "http://localhost:12379/v3/watch",
-        #         'POST',
-        #         data=None,
-        #         content=body,
-        #         headers=None,
-        #         params=None,                
-        #     )
-        
-        # return StreamingResponse(sr,
-        #                         status_code=response.status_code,
-        #                         headers=response.headers)
+                                    headers=response.headers)        
         
     except Exception as e:
         raise e
@@ -223,3 +209,17 @@ async def test_kafka_2(request:Request, itemid:str=None):
         "subscribe": "python.demo.2"
     }, on_callback)
     return ReponseVO(data=Context.Value('${env:LANGFUSE.secret_key:1-sk-lf-b60f4b33-ff5a-46ac-9086-e776373c86da}'))
+
+
+@Controller(WebContext.getRoot(), prefix='/sample/api', tags=["Sample接口"])
+class SampleController:
+    userService:UerService = Context.Autowired()
+
+    @RequestBind.GetMapping('/test/{id}')    
+    async def test(self, id):
+        _logger.DEBUG(f'id={id}')
+        return {'id':id}
+
+
+
+
