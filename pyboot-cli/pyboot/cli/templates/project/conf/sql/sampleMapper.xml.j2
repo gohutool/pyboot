@@ -1,5 +1,8 @@
+{% if template == 'web' %}
 <mapper namespace='application.{{package_name}}.dao.hello.UserMapper'>
-
+{% elif template == 'microservice' %}
+<mapper namespace='application.{{package_name}}.dao.UserMapper'>
+{% endif %}
     <ref id="selectUserVo">
         select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_by, u.create_time, u.remark, 
         d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,

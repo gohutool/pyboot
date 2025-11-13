@@ -4,11 +4,8 @@ from dataflow.module import Context,WebContext
 from dataflow.utils.log import Logger
 from fastapi import FastAPI, Request, status, HTTPException # noqa: F401
 from fastapi.responses import JSONResponse
-from dataflow.module.context.redis import RedisContext
-from dataflow.module.context.kafka import KafkaContext
 from dataflow.utils.web.asgi_proxy import AdvancedProxyService,StreamResponse
-
-from application.{{package_name}}.service.hello import ItemService, getInfos, UerService
+from application.{{package_name}}.service import ItemService, getInfos, UerService
 import httpx
 import asyncio
 from fastapi.responses import StreamingResponse
@@ -17,8 +14,16 @@ from dataflow.module.context.web import RequestBind, create_token,Controller
 
 _logger = Logger('application.{{package_name}}.api')
 
-app:FastAPI = WebContext.getRoot()
+@Controller(WebContext.getRoot(), prefix='/sample/api', tags=["Sample接口"])
+class SampleController:
+    userService:UerService = Context.Autowired()
 
+    @RequestBind.GetMapping('/test/{id}')    
+    async def test(self, id):
+        _logger.DEBUG(f'id={id}')
+        return {'id':id}
+
+app:FastAPI = WebContext.getRoot()
 
 @app.get("/test")
 async def test_endpoint(request:Request):
@@ -31,14 +36,12 @@ async def test_endpoint(request:Request):
     
 
 @app.get("/test/redis/{itemid}")
-@RedisContext.redis_cache(ttl=60, prefix='cache:data:test:items')
 async def test_redis_cache(request:Request, itemid:str):
     _logger.INFO('测试Redis_Cache组件')
     return ReponseVO(data={"itemid":itemid, "time":date_datetime_cn()})
 
 
 @app.get("/test/redis_service/{itemid}")
-@RedisContext.redis_cache(ttl=60, prefix='cache:data:test:redis-items')
 async def test_service(request:Request, itemid:str):
     _logger.INFO('测试Redis和UserService组件')
     _is:UerService = Context.getContext().getBean('userService')    
@@ -176,47 +179,6 @@ async def test_get_request():
     return ReponseVO(data={"base_url":request.base_url, 
                            'method': request.method})
 
-def on_callback(err, msg):
-    _logger.DEBUG(f'====={msg}')
-    if err:
-        _logger.DEBUG(f'❌ {err}')
-    else:
-        _logger.DEBUG(f'✅ {msg.topic()} {msg.partition()} {msg.offset()}')
-
-
-@app.get("/test/kafka1")
-async def test_kafka_1(request:Request, itemid:str=None):
-    _logger.INFO('测试Kafka1组件')
-    KafkaContext.getOutBoud('server-1').send('input_others', {
-        "time": date_datetime_cn(),
-        "time_str": date2str_yyyymmddhhmmsss(date_datetime_cn()),
-        'itemid':itemid,
-        "inbound":"server-1",
-        "subscribe": "python.test.1"
-    }, on_callback)
-    return ReponseVO(data=Context.Value('${env:LANGFUSE.secret_key:1-sk-lf-b60f4b33-ff5a-46ac-9086-e776373c86da}'))
-
-@app.get("/test/kafka2")
-async def test_kafka_2(request:Request, itemid:str=None):
-    _logger.INFO('测试Kafka2组件')
-    KafkaContext.getOutBoud('server-2').send('input_cardata', {
-        "time": date_datetime_cn(),
-        "time_str": date2str_yyyymmddhhmmsss(date_datetime_cn()),
-        'itemid':itemid,
-        "inbound":"server-2",
-        "subscribe": "python.demo.2"
-    }, on_callback)
-    return ReponseVO(data=Context.Value('${env:LANGFUSE.secret_key:1-sk-lf-b60f4b33-ff5a-46ac-9086-e776373c86da}'))
-
-
-@Controller(WebContext.getRoot(), prefix='/sample/api', tags=["Sample接口"])
-class SampleController:
-    userService:UerService = Context.Autowired()
-
-    @RequestBind.GetMapping('/test/{id}')    
-    async def test(self, id):
-        _logger.DEBUG(f'id={id}')
-        return {'id':id}
 
 
 

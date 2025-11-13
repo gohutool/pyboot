@@ -106,10 +106,21 @@ def install(package_name):
 
 @cli.command(context_settings={"ignore_unknown_options": True, "allow_extra_args": True})
 def run():
-    from dataflow.boot import ApplicationBoot
+    # from dataflow.boot import ApplicationBoot
+    # proj_root = pathlib.Path.cwd()          # 假设 cli 就在项目根
+    # sys.path.insert(0, str(proj_root)) 
+    # ApplicationBoot.Start()
+    import runpy
+    # 1. 保证模块能被发现
     proj_root = pathlib.Path.cwd()          # 假设 cli 就在项目根
-    sys.path.insert(0, str(proj_root)) 
-    ApplicationBoot.Start()
+    if proj_root not in sys.path:
+        sys.path.insert(0, str(proj_root)) 
+    # 2. 把 argv[0] 换成模块入口，保持后续所有参数    
+    sys.argv = ["-m dataflow.main", *sys.argv[1:]]
+    # 3. 以“python -m dataflow.main <args...>”方式执行
+    runpy.run_module("dataflow.main", run_name="__main__")
+        
+    
 
 @cli.command()
 def doctor():

@@ -1,0 +1,12 @@
+from dataflow.utils.log import Logger
+from dataflow.module import Context
+
+_logger = Logger('dataflowx.context.sample')
+
+_logger.DEBUG('加载Samplex模块')
+
+## 可以参考写法dataflow.module.redis写法
+
+@Context.Configurationable(prefix='context.test')
+def config_all(config):
+    _logger.DEBUG(f'========={config}')
